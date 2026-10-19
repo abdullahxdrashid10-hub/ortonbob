@@ -21,9 +21,9 @@ const CONFIG = {
   // --- 1. Passcode Configuration ---
   // The answer to the riddle. Case-insensitive and trimmed.
   // Secondary answers also supported so she won't get stuck if she guesses variations!
-  passcode: "HEART",
-  secondaryPasscodes: ["ZUHA", "DIL", "MY HEART", "YOUR HEART", "LOVE", "PROJECT LOVE"],
-  hintText: "Riddle: What belongs completely to you, but only beats for you?",
+  passcode: "PROMISE",
+  secondaryPasscodes: ["HOME", "WAADA", "A PROMISE", "MY PROMISE", "TRUST", "LOVE", "ZUHA"],
+  hintText: "Riddle: I weigh nothing to hold, but when broken, I can shatter a world. What do I swear to you today—to protect, honor, and never break again?",
 
   // --- 2. WhatsApp Contact ---
   phoneNumber: "923088295557",
@@ -31,11 +31,11 @@ const CONFIG = {
   // --- 3. Apology Message / Letter Paragraphs ---
   // Each paragraph fades in sequentially about 1.5s apart.
   messageParagraphs: [
-    "My dearest Zuha,",
-    "I'm writing this because words sometimes fail me in the moment, but my heart has never been more certain of how much you mean to me. I know I messed up, and seeing you hurt because of me breaks something deep inside me.",
-    "You are the most precious person in my world—your laughter, your kindness, and the warmth you bring into my life are things I never, ever want to take for granted.",
-    "I am truly, deeply sorry from the bottom of my heart. I don't expect everything to magically disappear with a website, but I wanted to make this to show you that I am here, I am listening, and I will always choose you.",
-    "Whenever you are ready to talk, I am here. No rush, no pressure. Just me, waiting to hold your hand and make things right."
+    "Zuha, I’ve been sitting here with a heavy chest, searching for words that could even begin to measure up to how sorry I am. I know reading an apology on a screen can't instantly undo the sting of what happened, but I needed you to know that seeing pain in your eyes because of me is the worst feeling I have ever endured.",
+    "You are the gentlest, most precious part of my life. Your patience, your warmth, and the way you care are gifts I never, ever want to take for granted. When I stumbled and hurt you, I let down the one person whose happiness means everything to me.",
+    "I'm not here to make excuses or hide behind easy words. I am holding myself fully accountable. I want to listen to every single thought in your head, feel every feeling with you, and learn how to love and protect you better. You deserve certainty, tenderness, and unwavering respect.",
+    "I love you, Zuha. Not just when everything is effortless, but especially on the hard days when things need healing. You are my safe haven, and I will spend every tomorrow earning back your complete peace.",
+    "Take whatever time and space your heart needs right now. There is no rush, and no pressure. I am right here, waiting patiently to hold your hand whenever you are ready to talk."
   ],
 
   // --- 4. Photos & Captions ---
@@ -59,78 +59,78 @@ const CONFIG = {
   // NO WRONG ANSWERS: Every tap is accepted and increments the score.
   questions: [
     {
-      question: "When did I realize you were the one?",
+      question: "When you are having a rough day, what is my number one mission?",
       options: [
-        "The very first conversation we had",
-        "The first time you laughed at my silly joke",
-        "When I saw how deeply pure your heart is",
-        "Honestly, every single day all over again"
+        "Wrap you up in a blanket and never let go",
+        "Listen to everything you feel until your heart is light",
+        "Bring you your favorite comfort food and sweet treats",
+        "Silently hold your hand and remind you how loved you are"
       ],
       reactions: [
-        "From the first word, you felt like home.",
-        "Your laugh is my absolute favorite sound on earth.",
-        "Your kindness is what made me fall irrevocably in love.",
-        "And I will keep choosing you every single tomorrow."
+        "And I'll never let you face the cold world alone.",
+        "Your feelings are always safe with me, Zuha.",
+        "Anything just to see that beautiful smile back.",
+        "No matter what happens, you will never be alone."
       ]
     },
     {
-      question: "What is my absolute favorite thing about you, Zuha?",
+      question: "What do I secretly do every time you look away or get distracted?",
       options: [
-        "Your breathtaking eyes and smile",
-        "How caring and protective you are",
-        "The cute way you pout when you're teasing me",
-        "Everything—there isn't a single flaw"
+        "Stare at you and wonder how on earth I got so lucky",
+        "Smile like an idiot just watching you be yourself",
+        "Notice every tiny, adorable detail about your face",
+        "All of the above, completely guilty as charged"
       ],
       reactions: [
-        "I could get lost in your eyes for a lifetime.",
-        "Your gentle care is the safest place I've ever known.",
-        "It melts me completely every single time.",
-        "You are absolute perfection in my eyes."
+        "Honestly, I ask the universe that every single day.",
+        "You bring out a happiness in me no one else can.",
+        "Every little glance of yours is etched into my soul.",
+        "Caught red-handed... you have all of me, Zuha."
       ]
     },
     {
-      question: "What is my favorite memory of us so far?",
+      question: "If our love had a soundtrack, what would it sound like?",
       options: [
-        "Our late-night talks where hours felt like seconds",
-        "That time we couldn't stop laughing together",
-        "A quiet, simple moment where it was just us",
-        "Every second we've ever shared together"
+        "Late-night gentle rain drumming against the window",
+        "A soft acoustic melody when the world goes quiet",
+        "The uncontrollable giggles we share over silly jokes",
+        "The steady, comforting rhythm of our heartbeats together"
       ],
       reactions: [
-        "Those nights are etched into my soul forever.",
-        "My heart was so full of joy in that moment.",
-        "Pure peace with my favorite human.",
-        "Each memory with you is a treasure I guard with my life."
+        "Quiet, warm, and peacefully safe with you.",
+        "A song I want on repeat for the rest of my life.",
+        "Your laughter is the sweetest music in existence.",
+        "Beating in perfect harmony, always."
       ]
     },
     {
-      question: "If we could be anywhere in the world right now, where would we be?",
+      question: "What is one thing that will NEVER change, no matter what happens?",
       options: [
-        "Under a dark starry sky, just talking quietly",
-        "On a cozy couch with warm blankets and hot chocolate",
-        "Walking by the ocean listening to the waves",
-        "Anywhere at all, as long as I'm with you"
+        "How deeply and endlessly I respect and adore you",
+        "That you are my first thought in the morning and last at night",
+        "My commitment to becoming the man you truly deserve",
+        "The way my heart races whenever you call my name"
       ],
       reactions: [
-        "Under the stars with you is my definition of heaven.",
-        "The warmest, sweetest sanctuary in existence.",
-        "The sea breeze and your hand in mine.",
-        "Anywhere with you is my favorite place on Earth."
+        "My love and respect for who you are only grows stronger.",
+        "You live in every quiet thought I have.",
+        "I will keep learning, listening, and being better for you.",
+        "Every single time, like day one."
       ]
     },
     {
-      question: "How long am I going to keep loving you?",
+      question: "When we look back on this rough patch years from now, what will we remember?",
       options: [
-        "Until the stars stop shining",
-        "Through every storm and sunny day",
-        "Beyond forever and then some",
-        "Always and without an end"
+        "That our love was strong enough to overcome anything",
+        "How deeply we cared enough to fight for each other",
+        "The moment we held each other tighter and chose forever",
+        "Just another proof that nothing can pull us apart"
       ],
       reactions: [
-        "Even then, my love for you will remain.",
-        "Hand in hand through everything life brings.",
-        "Forever is just the start for us.",
-        "Always, Zuha. Always."
+        "We bend, but we never break. Us against the world.",
+        "Because what we have is far too rare to ever let go of.",
+        "A tighter embrace and a sweeter tomorrow.",
+        "Forever and always, my Zuha."
       ]
     }
   ]
