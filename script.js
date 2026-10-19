@@ -21,9 +21,9 @@ const CONFIG = {
   // --- 1. Passcode Configuration ---
   // The answer to the riddle. Case-insensitive and trimmed.
   // Secondary answers also supported so she won't get stuck if she guesses variations!
-  passcode: "PROMISE",
-  secondaryPasscodes: ["HOME", "WAADA", "A PROMISE", "MY PROMISE", "TRUST", "LOVE", "ZUHA"],
-  hintText: "Riddle: I weigh nothing to hold, but when broken, I can shatter a world. What do I swear to you today—to protect, honor, and never break again?",
+  passcode: "EYES",
+  secondaryPasscodes: ["YOUR EYES", "MY EYES", "AANKHEIN", "AANKHEN", "THE EYES", "EYE", "ZUHA", "LOVE"],
+  hintText: "Riddle: You look through us, but he looks into us and sees his entire world and future. What are we?",
 
   // --- 2. WhatsApp Contact ---
   phoneNumber: "923088295557",
