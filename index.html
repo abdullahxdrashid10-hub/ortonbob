@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>For You, Zuha</title>
+  
+  <!-- Single external font: Noto Sans for comprehensive global script support with system fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background with celestial glow and interactive floating elements -->
+  <div class="ambient-stars" aria-hidden="true" id="ambientStars"></div>
+  <div class="floating-bunnies-container" aria-hidden="true" id="floatingDecor"></div>
+
+  <!-- Main Container -->
+  <main id="app">
+
+    <!-- ========================================== -->
+    <!-- SCREEN 1: PASSCODE                         -->
+    <!-- ========================================== -->
+    <section id="screen-passcode" class="screen screen-active" aria-label="Password Gate">
+      <div class="passcode-card">
+        <div class="lock-wrapper" id="lockIcon">
+          <svg class="lock-svg" viewBox="0 0 64 64" width="68" height="68" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="lock-shackle" d="M22 28V19C22 13.477 26.477 9 32 9C37.523 9 42 13.477 42 19V28" stroke="url(#goldGradient)" stroke-width="4.5" stroke-linecap="round"/>
+            <rect class="lock-body" x="14" y="27" width="36" height="28" rx="8" fill="url(#navyGradient)" stroke="url(#goldGradient)" stroke-width="2.5"/>
+            <circle class="lock-keyhole-top" cx="32" cy="38" r="3.5" fill="#f8d689"/>
+            <path class="lock-keyhole-bottom" d="M30.5 39.5L29 48H35L33.5 39.5" fill="#f8d689"/>
+            <defs>
+              <linearGradient id="goldGradient" x1="14" y1="9" x2="50" y2="55" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ffe3a8"/>
+                <stop offset="0.5" stop-color="#eec778"/>
+                <stop offset="1" stop-color="#d49a4f"/>
+              </linearGradient>
+              <linearGradient id="navyGradient" x1="14" y1="27" x2="50" y2="55" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#142143"/>
+                <stop offset="1" stop-color="#0a1226"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <h1 class="passcode-title">Just For You</h1>
+        <p class="passcode-subtitle">A whisper only you would know...</p>
+
+        <form id="passcodeForm" class="passcode-form" autocomplete="off" onsubmit="return false;">
+          <div class="input-wrap">
+            <input 
+              type="text" 
+              id="passcodeInput" 
+              class="passcode-input" 
+              placeholder="Enter secret answer..." 
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-label="Secret Passcode"
+            />
+            <div class="input-glow"></div>
+          </div>
+
+          <p class="passcode-hint" id="hintLine">
+            <span class="hint-icon">✦</span>
+            <span id="hintText">HINT_TEXT</span>
+          </p>
+
+          <button type="submit" id="unlockBtn" class="btn-primary">
+            <span>Unlock</span>
+            <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </form>
+
+        <p class="error-msg" id="passcodeError" aria-live="polite"></p>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 2: THE LANGUAGE HEART               -->
+    <!-- ========================================== -->
+    <section id="screen-heart" class="screen screen-hidden" aria-label="Heart of Languages">
+      <div class="heart-viewport" id="heartViewport">
+        <!-- Floating words will be injected here dynamically -->
+        <div class="heart-stage" id="heartStage"></div>
+      </div>
+      
+      <div class="heart-controls" id="heartControls">
+        <button id="heartContinueBtn" class="btn-primary btn-fade-in" style="display: none;">
+          <span>Continue to Memories</span>
+          <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 3: PHOTOS                           -->
+    <!-- ========================================== -->
+    <section id="screen-photos" class="screen screen-hidden" aria-label="Photo Memories">
+      <div class="photos-header">
+        <span class="section-tag">Memories</span>
+        <h2 class="photos-title">Moments That Belong To Us</h2>
+        <p class="photos-subtitle">Tap any picture to hold the moment closer</p>
+      </div>
+
+      <div class="polaroid-gallery" id="polaroidGallery">
+        <!-- Polaroid cards populated by script.js -->
+      </div>
+
+      <div class="photos-footer">
+        <button id="photosContinueBtn" class="btn-primary">
+          <span>Let's Play A Little Game</span>
+          <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Fullscreen Lightbox Modal -->
+      <div id="photoLightbox" class="lightbox-modal" aria-hidden="true" role="dialog">
+        <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+        <div class="lightbox-content">
+          <div class="lightbox-polaroid">
+            <img id="lightboxImg" src="" alt="Enlarged memory" />
+            <p id="lightboxCaption" class="lightbox-caption"></p>
+          </div>
+          <button id="lightboxCloseBtn" class="lightbox-close" aria-label="Close photo">✕</button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 4: THE QUIZ                         -->
+    <!-- ========================================== -->
+    <section id="screen-quiz" class="screen screen-hidden" aria-label="Us Quiz">
+      <div class="quiz-container">
+        
+        <!-- Question View -->
+        <div id="quizQuestionView" class="quiz-card">
+          <div class="quiz-topbar">
+            <span class="quiz-progress" id="quizProgress">Question 1 of 5</span>
+            <span class="quiz-score-badge" id="quizScoreBadge">💖 Score: 0/5</span>
+          </div>
+
+          <div class="quiz-prompt-wrap">
+            <h2 class="quiz-question-text" id="quizQuestionText">Question text goes here</h2>
+          </div>
+
+          <div class="quiz-options-grid" id="quizOptionsGrid">
+            <!-- Option buttons injected by script.js -->
+          </div>
+
+          <div class="quiz-reaction-box" id="quizReactionBox">
+            <p class="quiz-reaction-text" id="quizReactionText"></p>
+          </div>
+
+          <div class="quiz-nav">
+            <button id="quizNextBtn" class="btn-primary" style="display: none;">
+              <span>Next</span>
+              <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz Final Result View -->
+        <div id="quizResultView" class="quiz-result-card" style="display: none;">
+          <div class="result-heart-burst">✦ 💖 ✦</div>
+          <div class="result-score-circle">
+            <span class="score-num">5 / 5</span>
+          </div>
+          <h2 class="result-title">A Perfect Score</h2>
+          <p class="result-quote">"Every answer was right, because it's all us."</p>
+          <button id="quizContinueBtn" class="btn-primary">
+            <span>Read What's In My Heart</span>
+            <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 5: MESSAGE (APOLOGY & LETTER)       -->
+    <!-- ========================================== -->
+    <section id="screen-message" class="screen screen-hidden" aria-label="Apology Letter">
+      <div class="message-card">
+        
+        <!-- Optional Audio Voice Note (Auto-detected if audio/message.mp3 exists) -->
+        <div id="voiceNoteContainer" class="voice-note-wrap" style="display: none;">
+          <button id="voiceNoteBtn" class="btn-voice-note" aria-label="Play voice note">
+            <span class="voice-icon">🎙️</span>
+            <span id="voiceBtnText">Play my voice note</span>
+            <span class="voice-bars" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </span>
+          </button>
+          <audio id="voiceAudio" preload="none"></audio>
+        </div>
+
+        <div class="letter-header">
+          <div class="letter-tag">From My Soul To Yours</div>
+          <h1 class="letter-title">Dearest Zuha,</h1>
+        </div>
+
+        <!-- Paragraphs fade in one by one -->
+        <div class="letter-body" id="letterBody">
+          <!-- Paragraph elements injected dynamically by script.js -->
+        </div>
+
+        <!-- Conclusion & WhatsApp link -->
+        <div class="letter-footer" id="letterFooter">
+          <p class="closing-sentiment">I'd love to talk whenever you're ready.</p>
+          <a id="whatsappLink" href="#" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+            <svg class="wa-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.456 5.71 1.457h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            <span>Talk to me</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
