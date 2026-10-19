@@ -50,7 +50,9 @@ const CONFIG = {
     { src: "photos/7.jpg", caption: "A quiet moment I hold so close" },
     { src: "photos/8.jpg", caption: "My favorite person to laugh with" },
     { src: "photos/9.jpg", caption: "No one else could ever compare to you" },
-    { src: "photos/10.jpg", caption: "Forever grateful that you walked into my life" }
+    { src: "photos/10.jpg", caption: "Forever grateful that you walked into my life" },
+    { src: "photos/11.jpg", caption: "Every heartbeat says your name" },
+    { src: "photos/12.jpg", caption: "With you, now and always" }
   ],
 
   // --- 5. Quiz Questions & Reactions ---
@@ -135,7 +137,7 @@ const CONFIG = {
 };
 
 // ============================================================================
-// 44 LANGUAGES LIST (Exact specification)
+// 30 LANGUAGES LIST (Strict subset specified by user)
 // ============================================================================
 const LANGUAGES = [
   { lang: "English", text: "I love you", rtl: false },
@@ -152,121 +154,33 @@ const LANGUAGES = [
   { lang: "Portuguese", text: "Eu te amo", rtl: false },
   { lang: "Dutch", text: "Ik hou van jou", rtl: false },
   { lang: "Swedish", text: "Jag älskar dig", rtl: false },
-  { lang: "Norwegian", text: "Jeg elsker deg", rtl: false },
-  { lang: "Danish", text: "Jeg elsker dig", rtl: false },
-  { lang: "Finnish", text: "Minä rakastan sinua", rtl: false },
-  { lang: "Polish", text: "Kocham cię", rtl: false },
-  { lang: "Czech", text: "Miluji tě", rtl: false },
-  { lang: "Hungarian", text: "Szeretlek", rtl: false },
-  { lang: "Romanian", text: "Te iubesc", rtl: false },
-  { lang: "Russian", text: "Я тебя люблю", rtl: false },
-  { lang: "Ukrainian", text: "Я тебе кохаю", rtl: false },
   { lang: "Greek", text: "Σ' αγαπώ", rtl: false },
+  { lang: "Russian", text: "Я тебя люблю", rtl: false },
+  { lang: "Polish", text: "Kocham cię", rtl: false },
+  { lang: "Romanian", text: "Te iubesc", rtl: false },
   { lang: "Japanese", text: "愛してる", rtl: false },
   { lang: "Korean", text: "사랑해", rtl: false },
   { lang: "Chinese", text: "我爱你", rtl: false },
   { lang: "Thai", text: "ฉันรักเธอ", rtl: false },
   { lang: "Vietnamese", text: "Anh yêu em", rtl: false },
   { lang: "Indonesian", text: "Aku cinta kamu", rtl: false },
-  { lang: "Malay", text: "Saya cinta padamu", rtl: false },
   { lang: "Filipino", text: "Mahal kita", rtl: false },
   { lang: "Bengali", text: "আমি তোমাকে ভালোবাসি", rtl: false },
-  { lang: "Tamil", text: "நான் உன்னை காதலிக்கிறேன்", rtl: false },
-  { lang: "Punjabi", text: "ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ", rtl: false },
-  { lang: "Georgian", text: "მიყვარხარ", rtl: false },
-  { lang: "Armenian", text: "Սիրում եմ քեզ", rtl: false },
   { lang: "Swahili", text: "Nakupenda", rtl: false },
   { lang: "Zulu", text: "Ngiyakuthanda", rtl: false },
-  { lang: "Amharic", text: "እወድሻለሁ", rtl: false },
   { lang: "Welsh", text: "Rwy'n dy garu di", rtl: false },
-  { lang: "Irish", text: "Tá grá agam duit", rtl: false },
-  { lang: "Hawaiian", text: "Aloha au iā 'oe", rtl: false },
-  { lang: "Latin", text: "Te amo", rtl: false }
+  { lang: "Hawaiian", text: "Aloha au iā 'oe", rtl: false }
 ];
 
 // ============================================================================
 // APP CONTROLLER & SCREEN NAVIGATION
 // ============================================================================
-// ============================================================================
-// APP CONTROLLER & SCREEN NAVIGATION
-// ============================================================================
 document.addEventListener("DOMContentLoaded", () => {
-  initStardustCanvas();
-  initAmbientDecor();
   initPasscodeScreen();
   initPhotosScreen();
   initQuizScreen();
   initMessageScreen();
 });
-
-/**
- * Interactive Stardust Trail on Cursor Move & Touch Drag
- */
-function initStardustCanvas() {
-  const canvas = document.createElement("canvas");
-  canvas.id = "stardustCanvas";
-  document.body.appendChild(canvas);
-  const ctx = canvas.getContext("2d");
-
-  let width = (canvas.width = window.innerWidth);
-  let height = (canvas.height = window.innerHeight);
-
-  window.addEventListener("resize", () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
-
-  const particles = [];
-  const colors = ["#ecd188", "#f0a3b2", "#ffffff", "#ffd599"];
-
-  function addParticle(x, y) {
-    for (let i = 0; i < 2; i++) {
-      particles.push({
-        x: x + (Math.random() * 8 - 4),
-        y: y + (Math.random() * 8 - 4),
-        vx: (Math.random() - 0.5) * 1.2,
-        vy: (Math.random() - 0.5) * 1.2 - 0.4,
-        size: Math.random() * 2.5 + 1.2,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        life: 1,
-        decay: Math.random() * 0.025 + 0.02
-      });
-    }
-  }
-
-  window.addEventListener("pointermove", (e) => {
-    addParticle(e.clientX, e.clientY);
-  });
-
-  function renderStardust() {
-    ctx.clearRect(0, 0, width, height);
-
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life -= p.decay;
-
-      if (p.life <= 0) {
-        particles.splice(i, 1);
-        continue;
-      }
-
-      ctx.save();
-      ctx.globalAlpha = p.life * 0.8;
-      ctx.fillStyle = p.color;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    requestAnimationFrame(renderStardust);
-  }
-  requestAnimationFrame(renderStardust);
-}
 
 /**
  * Switch from current screen to target screen using smooth opacity & scale
@@ -277,14 +191,12 @@ function switchScreen(fromScreenId, toScreenId, onComplete) {
 
   if (!fromEl || !toEl) return;
 
-  // Scroll to top
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   fromEl.classList.remove("screen-active");
   setTimeout(() => {
     fromEl.classList.add("screen-hidden");
     toEl.classList.remove("screen-hidden");
-    // Force layout reflow before triggering CSS active transition
     void toEl.offsetWidth;
     toEl.classList.add("screen-active");
     if (typeof onComplete === "function") {
@@ -294,69 +206,11 @@ function switchScreen(fromScreenId, toScreenId, onComplete) {
 }
 
 // ============================================================================
-// 1. AMBIENT FLOATING DECOR (Bunnies, Hearts & Sparkles with Speech Bubbles)
-// ============================================================================
-function initAmbientDecor() {
-  const container = document.getElementById("floatingDecor");
-  if (!container) return;
-
-  const stickers = [
-    { svg: "🐰", whisper: "Psst... you know the answer! 🐰" },
-    { svg: "✨", whisper: "You light up his entire world ✨" },
-    { svg: "🤍", whisper: "He loves you beyond measure 🤍" },
-    { svg: "🌸", whisper: "A special smile just for Zuha 🌸" },
-    { svg: "🌙", whisper: "Under the stars, thinking of you 🌙" },
-    { svg: "💖", whisper: "What beats only for you? 💖" }
-  ];
-
-  const count = window.innerWidth < 480 ? 7 : 12;
-
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement("div");
-    el.className = "floating-sticker";
-    const item = stickers[i % stickers.length];
-    el.textContent = item.svg;
-
-    // Speech bubble element
-    const bubble = document.createElement("div");
-    bubble.className = "bunny-speech-bubble";
-    bubble.textContent = item.whisper;
-    el.appendChild(bubble);
-
-    // Randomize positions and drift speeds
-    const left = Math.random() * 88 + 4; // 4% to 92%
-    const top = Math.random() * 88 + 4;
-    const size = Math.random() * 14 + 18; // 18px to 32px
-    const delay = Math.random() * 10;
-    const duration = Math.random() * 10 + 14;
-
-    el.style.left = `${left}%`;
-    el.style.top = `${top}%`;
-    el.style.fontSize = `${size}px`;
-    el.style.animationDelay = `-${delay}s`;
-    el.style.animationDuration = `${duration}s`;
-
-    // Interactive playful tap reveals whisper bubble
-    el.addEventListener("click", () => {
-      bubble.classList.add("active");
-      el.style.transform = "scale(1.4) rotate(15deg)";
-      setTimeout(() => {
-        bubble.classList.remove("active");
-        el.style.transform = "";
-      }, 2600);
-    });
-
-    container.appendChild(el);
-  }
-}
-
-// ============================================================================
-// 2. SCREEN 1: PASSCODE CONTROLLER (WITH TYPING PULSE & SPARKS)
+// 1. SCREEN 1: PASSCODE CONTROLLER
 // ============================================================================
 function initPasscodeScreen() {
   const form = document.getElementById("passcodeForm");
   const input = document.getElementById("passcodeInput");
-  const hintLine = document.getElementById("hintLine");
   const hintText = document.getElementById("hintText");
   const errorMsg = document.getElementById("passcodeError");
   const lockIcon = document.getElementById("lockIcon");
@@ -364,34 +218,6 @@ function initPasscodeScreen() {
 
   if (hintText) {
     hintText.textContent = CONFIG.hintText;
-  }
-
-  // Interactive typing: keyhole pulse and floating sparks
-  if (input) {
-    const sparkEmojis = ["💖", "✨", "✦", "🤍", "🌸"];
-    input.addEventListener("input", () => {
-      lockIcon.classList.add("typing-pulse");
-      setTimeout(() => lockIcon.classList.remove("typing-pulse"), 350);
-
-      // Spawn a floating spark above input
-      const rect = input.getBoundingClientRect();
-      const spark = document.createElement("div");
-      spark.className = "typing-spark";
-      spark.textContent = sparkEmojis[Math.floor(Math.random() * sparkEmojis.length)];
-      spark.style.left = `${rect.left + rect.width / 2 + (Math.random() * 60 - 30)}px`;
-      spark.style.top = `${rect.top + 10}px`;
-      spark.style.setProperty("--dx", `${(Math.random() - 0.5) * 50}px`);
-      spark.style.setProperty("--rot", `${(Math.random() - 0.5) * 40}deg`);
-      document.body.appendChild(spark);
-      setTimeout(() => spark.remove(), 900);
-    });
-  }
-
-  if (hintLine) {
-    hintLine.addEventListener("click", () => {
-      hintLine.style.transform = "scale(1.05)";
-      setTimeout(() => (hintLine.style.transform = ""), 300);
-    });
   }
 
   function handleUnlock() {
@@ -407,11 +233,9 @@ function initPasscodeScreen() {
     const isMatch = (entered === correctMain) || correctSecondaries.includes(entered);
 
     if (isMatch) {
-      // Clear error
       errorMsg.classList.remove("visible");
       errorMsg.textContent = "";
 
-      // Unlock animation
       lockIcon.classList.add("lock-unlocked");
       unlockBtn.disabled = true;
       input.disabled = true;
@@ -423,12 +247,11 @@ function initPasscodeScreen() {
       }, 700);
 
     } else {
-      // Gentle shake & soft message
       showError("Not quite, my love... read the riddle again ✦");
       const card = document.querySelector(".passcode-card");
       if (card) {
         card.classList.remove("shake");
-        void card.offsetWidth; // trigger reflow
+        void card.offsetWidth;
         card.classList.add("shake");
       }
     }
@@ -455,7 +278,7 @@ function initPasscodeScreen() {
 }
 
 // ============================================================================
-// 3. SCREEN 2: THE CONCENTRIC SILHOUETTE LANGUAGE HEART
+// 2. SCREEN 2: CONCENTRIC HEART RINGS CONTROLLER
 // ============================================================================
 let heartAnimationStarted = false;
 
@@ -471,194 +294,311 @@ function startHeartAnimation() {
 
   const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Viewport dimensions
-  const vw = viewport.clientWidth;
-  const vh = viewport.clientHeight;
-  const centerX = vw / 2;
-  const centerY = vh / 2 - 12;
+  // Viewport dimensions & safe bounds
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const isDesktop = vw >= 768;
 
-  // Exact Parametric Heart Equation:
-  // x(t) = 16 * sin^3(t)
-  // y(t) = -(13*cos(t) - 5*cos(2t) - 2*cos(3t) - cos(4t))
-  function heartPoint(t, rScale = 1.0) {
-    const sinT = Math.sin(t);
-    const hx = 16 * Math.pow(sinT, 3);
-    const hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
-    return { x: hx * rScale, y: hy * rScale };
+  // Outer ring fitted to 90% of viewport width (max 520px)
+  // Also bounded by viewport height so heart + Continue button are NEVER cut off at 390x844 or 1280x720
+  const maxW = Math.min(vw * 0.90, 520);
+  // Total heart height is 28.37 units, width is 32 units => aspect ratio 28.37 / 32 = 0.8866
+  // Available height: vh minus button (50px) and margins (~130px)
+  const availH = Math.max(260, vh - 140);
+  const heartW = Math.min(maxW, availH / 0.8866);
+  const heartH = heartW * 0.8866;
+  const scale = heartW / 32;
+
+  stage.style.width = `${heartW}px`;
+  stage.style.height = `${heartH}px`;
+  const centerX = heartW / 2;
+  const centerY = heartH / 2;
+
+  // Parametric heart formula sampled at 400 points:
+  // x = 16 * sin^3(t)
+  // y = 13*cos(t) - 5*cos(2t) - 2*cos(3t) - cos(4t)
+  // Screen Y is flipped and shifted by -2.815 to center vertically
+  function generateRingCurve(numPoints = 400) {
+    const pts = [];
+    for (let i = 0; i <= numPoints; i++) {
+      const t = (i / numPoints) * Math.PI * 2;
+      const sinT = Math.sin(t);
+      const hx = 16 * Math.pow(sinT, 3);
+      const hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) - 2.815;
+      pts.push({ x: hx, y: hy });
+    }
+
+    // Arc length table
+    const s = [0];
+    for (let i = 1; i <= numPoints; i++) {
+      const dx = pts[i].x - pts[i - 1].x;
+      const dy = pts[i].y - pts[i - 1].y;
+      s.push(s[i - 1] + Math.hypot(dx, dy));
+    }
+    const totalLength = s[numPoints];
+    return { pts, s, totalLength };
   }
 
-  // Scale factor to fit viewport with safe margins
-  const maxHeartWidth = Math.min(vw * 0.85, 420);
-  const scale = maxHeartWidth / 34;
+  const ringCurve = generateRingCurve(400);
 
-  // Separate Urdu from the remaining 43 phrases
-  const phrasesData = [...LANGUAGES];
-  const urduIndex = phrasesData.findIndex(p => p.isUrdu);
-  const [urduPhrase] = phrasesData.splice(urduIndex, 1);
+  // Function to place N items equally spaced along arc length
+  function getEquallySpacedPoints(count) {
+    const step = ringCurve.totalLength / count;
+    const res = [];
+    for (let k = 0; k < count; k++) {
+      const targetDist = (k + 0.5) * step;
+      let low = 0, high = ringCurve.s.length - 1;
+      while (low < high - 1) {
+        const mid = (low + high) >> 1;
+        if (ringCurve.s[mid] <= targetDist) low = mid;
+        else high = mid;
+      }
+      const frac = (targetDist - ringCurve.s[low]) / (ringCurve.s[high] - ringCurve.s[low] || 1);
+      const x = ringCurve.pts[low].x + frac * (ringCurve.pts[high].x - ringCurve.pts[low].x);
+      const y = ringCurve.pts[low].y + frac * (ringCurve.pts[high].y - ringCurve.pts[low].y);
+      res.push({ x, y });
+    }
+    return res;
+  }
 
-  // Generate target coordinates:
-  // Ring 1 (Outer Perimeter Silhouette): 28 phrases distributed smoothly along the full curve
-  // Ring 2 (Inner Heart Contour): 15 phrases distributed inside
-  // Centerpiece: Urdu ("مجھے تم سے محبت ہے") at the radiant heart center
-  const targets = [];
+  // Distribution: Urdu at center; remaining 29 phrases:
+  // Outer ring (scale 1.0): ~45% = 13 phrases
+  // Middle ring (scale 0.68): ~35% = 10 phrases
+  // Inner ring (scale 0.38): ~20% = 6 phrases
+  const allPhrases = [...LANGUAGES];
+  const urduIndex = allPhrases.findIndex(p => p.isUrdu);
+  const [urduPhrase] = allPhrases.splice(urduIndex, 1);
 
-  // Urdu center target
-  targets.push({
+  let outerList = allPhrases.slice(0, 13);
+  let middleList = allPhrases.slice(13, 23);
+  let innerList = allPhrases.slice(23, 29);
+
+  // Setup DOM elements
+  stage.innerHTML = "";
+
+  const items = [];
+
+  // Create Urdu element (center)
+  const urduSpan = document.createElement("span");
+  urduSpan.className = "lang-phrase urdu-highlight";
+  urduSpan.textContent = urduPhrase.text;
+  urduSpan.setAttribute("dir", "rtl");
+  stage.appendChild(urduSpan);
+  const urduItem = {
+    el: urduSpan,
     phrase: urduPhrase,
-    x: centerX,
-    y: centerY + 1 * scale,
-    isUrdu: true
-  });
+    ring: "urdu",
+    ringIndex: 3,
+    ringScale: 0,
+    targetX: centerX,
+    targetY: centerY
+  };
+  items.push(urduItem);
 
-  const outerCount = 28;
-  const innerCount = 15;
+  function createPhraseItems(list, ringName, ringIdx, ringScale) {
+    const listItems = [];
+    list.forEach(phrase => {
+      const span = document.createElement("span");
+      span.className = `lang-phrase ring-${ringName}`;
+      span.textContent = phrase.text;
+      if (phrase.rtl) span.setAttribute("dir", "rtl");
+      stage.appendChild(span);
+      const item = {
+        el: span,
+        phrase: phrase,
+        ring: ringName,
+        ringIndex: ringIdx,
+        ringScale: ringScale,
+        targetX: 0,
+        targetY: 0
+      };
+      listItems.push(item);
+      items.push(item);
+    });
+    return listItems;
+  }
 
-  // Outer ring coordinates (defines the unmistakable silhouette, dip, and sharp bottom)
-  for (let i = 0; i < outerCount; i++) {
-    const t = (i / outerCount) * Math.PI * 2;
-    const pt = heartPoint(t, 1.0);
-    const phrase = phrasesData[i % phrasesData.length];
-    targets.push({
-      phrase: phrase,
-      x: centerX + pt.x * scale,
-      y: centerY + pt.y * scale,
-      isUrdu: false
+  let outerItems = createPhraseItems(outerList, "outer", 0, 1.0);
+  let middleItems = createPhraseItems(middleList, "middle", 1, 0.68);
+  let innerItems = createPhraseItems(innerList, "inner", 2, 0.38);
+
+  // Base font sizes: outer 13px, middle 12px, inner 11px (+20% on desktop)
+  const baseSizes = {
+    outer: isDesktop ? Math.round(13 * 1.2) : 13,
+    middle: isDesktop ? Math.round(12 * 1.2) : 12,
+    inner: isDesktop ? Math.round(11 * 1.2) : 11,
+    urdu: isDesktop ? 22 : 18
+  };
+
+  // Recompute positions based on current item lists
+  function updateRingTargetCoords() {
+    const outerPts = getEquallySpacedPoints(outerItems.length);
+    outerItems.forEach((it, i) => {
+      it.targetX = centerX + outerPts[i].x * 1.0 * scale;
+      it.targetY = centerY + outerPts[i].y * 1.0 * scale;
+    });
+
+    const middlePts = getEquallySpacedPoints(middleItems.length);
+    middleItems.forEach((it, i) => {
+      it.targetX = centerX + middlePts[i].x * 0.68 * scale;
+      it.targetY = centerY + middlePts[i].y * 0.68 * scale;
+    });
+
+    const innerPts = getEquallySpacedPoints(innerItems.length);
+    innerItems.forEach((it, i) => {
+      it.targetX = centerX + innerPts[i].x * 0.38 * scale;
+      it.targetY = centerY + innerPts[i].y * 0.38 * scale;
+    });
+
+    urduItem.targetX = centerX;
+    urduItem.targetY = centerY;
+  }
+
+  function applyFontSizesAndPositions(reduction) {
+    items.forEach(it => {
+      const base = baseSizes[it.ring];
+      const curSize = Math.max(9, base - reduction);
+      it.el.style.fontSize = `${curSize}px`;
+    });
+
+    updateRingTargetCoords();
+
+    // Position each phrase centered upright at (targetX, targetY)
+    items.forEach(it => {
+      const w = it.el.offsetWidth;
+      const h = it.el.offsetHeight;
+      it.el.style.transform = `translate3d(${it.targetX - w / 2}px, ${it.targetY - h / 2}px, 0)`;
     });
   }
 
-  // Inner ring coordinates (scaled to 52% to create full depth without blobiness)
-  for (let j = 0; j < innerCount; j++) {
-    const t = (j / innerCount) * Math.PI * 2 + 0.12;
-    const pt = heartPoint(t, 0.52);
-    const phrase = phrasesData[(outerCount + j) % phrasesData.length];
-    targets.push({
-      phrase: phrase,
-      x: centerX + pt.x * scale,
-      y: centerY + (pt.y + 1.2) * scale,
-      isUrdu: false
+  function checkOverlaps() {
+    const boxes = items.map(it => ({
+      item: it,
+      rect: it.el.getBoundingClientRect()
+    }));
+
+    const overlappingItems = new Set();
+
+    for (let i = 0; i < boxes.length; i++) {
+      for (let j = i + 1; j < boxes.length; j++) {
+        const a = boxes[i].rect;
+        const b = boxes[j].rect;
+        // 6px total padding between boxes
+        const overlap = (
+          a.left < b.right + 6 &&
+          a.right > b.left - 6 &&
+          a.top < b.bottom + 6 &&
+          a.bottom > b.top - 6
+        );
+        if (overlap) {
+          overlappingItems.add(boxes[i].item);
+          overlappingItems.add(boxes[j].item);
+        }
+      }
+    }
+    return overlappingItems;
+  }
+
+  // Iteratively reduce font sizes down to min 9px
+  let fontReduction = 0;
+  let overlappingSet = new Set();
+  const maxReduction = Math.max(0, baseSizes.inner - 9);
+
+  for (fontReduction = 0; fontReduction <= maxReduction; fontReduction++) {
+    applyFontSizesAndPositions(fontReduction);
+    overlappingSet = checkOverlaps();
+    if (overlappingSet.size === 0) break;
+  }
+
+  // If still overlapping at minimum font size (9px), drop the longest phrases until no overlaps
+  while (overlappingSet.size > 0) {
+    // Find longest phrase among overlapping ones (excluding Urdu)
+    let longestItem = null;
+    let maxLen = -1;
+    overlappingSet.forEach(it => {
+      if (it.ring !== "urdu" && it.phrase.text.length > maxLen) {
+        maxLen = it.phrase.text.length;
+        longestItem = it;
+      }
     });
-  }
 
-  // Create SVG Constellation Outline in the background
-  const svgNS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("class", "heart-constellation-svg");
-  svg.setAttribute("viewBox", "-18 -18 36 38");
-  svg.setAttribute("width", `${maxHeartWidth + 20}px`);
-  svg.setAttribute("height", `${(maxHeartWidth + 20) * 1.05}px`);
+    if (!longestItem) break;
 
-  let pathD = "";
-  for (let i = 0; i <= 100; i++) {
-    const t = (i / 100) * Math.PI * 2;
-    const pt = heartPoint(t, 1.0);
-    pathD += `${i === 0 ? "M" : "L"} ${pt.x.toFixed(2)} ${pt.y.toFixed(2)} `;
-  }
-  pathD += "Z";
+    // Remove from its ring list and items
+    longestItem.el.remove();
+    const itIdx = items.indexOf(longestItem);
+    if (itIdx !== -1) items.splice(itIdx, 1);
 
-  const path = document.createElementNS(svgNS, "path");
-  path.setAttribute("d", pathD);
-  path.setAttribute("fill", "none");
-  path.setAttribute("stroke", "url(#constellationGrad)");
-  path.setAttribute("stroke-width", "0.5");
-  path.setAttribute("stroke-dasharray", "1.2 1.2");
-
-  const defs = document.createElementNS(svgNS, "defs");
-  const grad = document.createElementNS(svgNS, "linearGradient");
-  grad.setAttribute("id", "constellationGrad");
-  grad.setAttribute("x1", "0%");
-  grad.setAttribute("y1", "0%");
-  grad.setAttribute("x2", "100%");
-  grad.setAttribute("y2", "100%");
-  grad.innerHTML = `
-    <stop offset="0%" stop-color="#ffd599" stop-opacity="0.7"/>
-    <stop offset="50%" stop-color="#f0a3b2" stop-opacity="0.8"/>
-    <stop offset="100%" stop-color="#ecd188" stop-opacity="0.7"/>
-  `;
-  defs.appendChild(grad);
-  svg.appendChild(defs);
-  svg.appendChild(path);
-  stage.appendChild(svg);
-
-  // Create DOM elements for phrases
-  const phraseElements = [];
-  targets.forEach((item) => {
-    const span = document.createElement("span");
-    span.className = `lang-phrase ${item.isUrdu ? "urdu-highlight" : ""}`;
-    span.textContent = item.phrase.text;
-    if (item.phrase.rtl) {
-      span.setAttribute("dir", "rtl");
+    if (longestItem.ring === "outer") {
+      outerItems = outerItems.filter(it => it !== longestItem);
+    } else if (longestItem.ring === "middle") {
+      middleItems = middleItems.filter(it => it !== longestItem);
+    } else if (longestItem.ring === "inner") {
+      innerItems = innerItems.filter(it => it !== longestItem);
     }
 
-    // Dynamic responsive font size
-    if (item.isUrdu) {
-      span.style.fontSize = vw < 400 ? "17px" : "21px";
-    } else {
-      span.style.fontSize = vw < 400 ? "9px" : "11px";
-    }
-
-    stage.appendChild(span);
-
-    // Initial random drift position for Phase A
-    const randX = Math.random() * (vw - 80) + 20;
-    const randY = Math.random() * (vh - 80) + 30;
-
-    phraseElements.push({
-      el: span,
-      targetX: item.x,
-      targetY: item.y,
-      randX: randX,
-      randY: randY,
-      isUrdu: item.isUrdu
-    });
-  });
-
-  // Center alignment offset function
-  function getPositionTransform(el, targetX, targetY) {
-    const rect = el.getBoundingClientRect();
-    const halfW = rect.width / 2;
-    const halfH = rect.height / 2;
-    return `translate3d(${targetX - halfW}px, ${targetY - halfH}px, 0)`;
+    applyFontSizesAndPositions(fontReduction);
+    overlappingSet = checkOverlaps();
   }
 
-  // If user prefers reduced motion, skip directly to final glowing heart
+  // Compute final center-aligned target translate transforms
+  items.forEach(it => {
+    const w = it.el.offsetWidth;
+    const h = it.el.offsetHeight;
+    it.finalTransform = `translate3d(${it.targetX - w / 2}px, ${it.targetY - h / 2}px, 0)`;
+  });
+
+  // Assign Phase A random positions across viewport
+  items.forEach(it => {
+    it.randX = Math.random() * (vw - 100) + 10;
+    it.randY = Math.random() * (vh - 120) + 20;
+    it.phaseATransform = `translate3d(${it.randX}px, ${it.randY}px, 0)`;
+  });
+
+  // If user prefers reduced motion, skip animations
   if (isReducedMotion) {
-    phraseElements.forEach(item => {
-      item.el.style.transition = "none";
-      item.el.style.opacity = item.isUrdu ? "1" : "0.78";
-      item.el.style.transform = getPositionTransform(item.el, item.targetX, item.targetY);
+    items.forEach(it => {
+      it.el.style.transition = "none";
+      it.el.style.opacity = it.ring === "urdu" ? "1" : "0.85";
+      it.el.style.transform = it.finalTransform;
     });
     stage.classList.add("heart-glowing");
     continueBtn.style.display = "inline-flex";
     return;
   }
 
-  // --- PHASE A (approx 8s): Appear one at a time at random positions, drifting slowly ---
-  const interval = 8000 / phraseElements.length;
-  phraseElements.forEach((item, i) => {
-    // Initial invisible placement
-    item.el.style.opacity = "0";
-    item.el.style.transform = getPositionTransform(item.el, item.randX, item.randY);
+  // --- PHASE A (~8s): Phrases appear one at a time, drifting with low opacity (0.08 - 0.2) ---
+  const interval = 8000 / items.length;
+  items.forEach((it, i) => {
+    it.el.style.opacity = "0";
+    it.el.style.transform = it.phaseATransform;
 
     setTimeout(() => {
-      // Appear with low opacity (0.08 - 0.22)
-      item.el.style.opacity = (Math.random() * 0.14 + 0.08).toFixed(2);
-      // Slight gentle drift
-      const driftX = item.randX + (Math.random() * 26 - 13);
-      const driftY = item.randY + (Math.random() * 26 - 13);
-      item.el.style.transform = getPositionTransform(item.el, driftX, driftY);
+      it.el.style.opacity = (Math.random() * 0.12 + 0.08).toFixed(2);
+      const driftX = it.randX + (Math.random() * 24 - 12);
+      const driftY = it.randY + (Math.random() * 24 - 12);
+      it.el.style.transform = `translate3d(${driftX}px, ${driftY}px, 0)`;
     }, i * interval);
   });
 
-  // --- PHASE B (after 8s, glides over 6s): Glide to target positions forming filled heart ---
-  setTimeout(() => {
-    phraseElements.forEach(item => {
-      item.el.style.transition = "transform 5.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 5s ease";
-      item.el.style.opacity = item.isUrdu ? "1" : (Math.random() * 0.25 + 0.65).toFixed(2);
-      item.el.style.transform = getPositionTransform(item.el, item.targetX, item.targetY);
-    });
-  }, 8200);
+  // --- PHASE B: Glide to ring positions (outer first, then middle, then inner, then Urdu) ---
+  const ringDelays = {
+    outer: 8000,
+    middle: 8700,
+    inner: 9400,
+    urdu: 10100
+  };
 
-  // --- PHASE C (after 14s): Heart glows, slow pulse, Continue button fades in ---
+  items.forEach(it => {
+    const startDelay = ringDelays[it.ring] || 8000;
+    setTimeout(() => {
+      it.el.style.transition = "transform 3.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 3s ease";
+      it.el.style.opacity = it.ring === "urdu" ? "1" : (Math.random() * 0.15 + 0.75).toFixed(2);
+      it.el.style.transform = it.finalTransform;
+    }, startDelay);
+  });
+
+  // --- PHASE C: Once settled (~13.8s), slow pulse (scale 1 to 1.03), rose-gold glow, Continue button ---
   setTimeout(() => {
     stage.classList.add("heart-glowing");
     continueBtn.style.display = "inline-flex";
@@ -666,9 +606,8 @@ function startHeartAnimation() {
     void continueBtn.offsetWidth;
     continueBtn.style.transition = "opacity 0.8s ease, transform 0.8s ease";
     continueBtn.style.opacity = "1";
-  }, 14200);
+  }, 13800);
 
-  // Continue button navigation
   continueBtn.addEventListener("click", () => {
     switchScreen("screen-heart", "screen-photos");
   });
