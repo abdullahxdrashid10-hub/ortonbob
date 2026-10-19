@@ -424,27 +424,27 @@ function startHeartAnimation() {
 
   // Base font sizes: outer 13px, middle 12px, inner 11px (+20% on desktop)
   const baseSizes = {
-    outer: isDesktop ? Math.round(13 * 1.2) : 13,
-    middle: isDesktop ? Math.round(12 * 1.2) : 12,
-    inner: isDesktop ? Math.round(11 * 1.2) : 11,
-    urdu: isDesktop ? 22 : 18
+    outer: isDesktop ? 15 : 12.5,
+    middle: isDesktop ? 14 : 11.5,
+    inner: isDesktop ? 13 : 10.5,
+    urdu: isDesktop ? 19 : 15
   };
 
-  // Recompute positions based on current item lists
+  // Recompute positions based on current item lists with angular staggering to prevent radial collision
   function updateRingTargetCoords() {
-    const outerPts = getEquallySpacedPoints(outerItems.length);
+    const outerPts = getEquallySpacedPoints(outerItems.length, 0.25);
     outerItems.forEach((it, i) => {
       it.targetX = centerX + outerPts[i].x * 1.0 * scale;
       it.targetY = centerY + outerPts[i].y * 1.0 * scale;
     });
 
-    const middlePts = getEquallySpacedPoints(middleItems.length);
+    const middlePts = getEquallySpacedPoints(middleItems.length, 0.50);
     middleItems.forEach((it, i) => {
       it.targetX = centerX + middlePts[i].x * 0.68 * scale;
       it.targetY = centerY + middlePts[i].y * 0.68 * scale;
     });
 
-    const innerPts = getEquallySpacedPoints(innerItems.length);
+    const innerPts = getEquallySpacedPoints(innerItems.length, 0.25);
     innerItems.forEach((it, i) => {
       it.targetX = centerX + innerPts[i].x * 0.38 * scale;
       it.targetY = centerY + innerPts[i].y * 0.38 * scale;
@@ -465,25 +465,31 @@ function startHeartAnimation() {
 
     // Position each phrase centered upright at (targetX, targetY)
     items.forEach(it => {
-      const w = it.el.offsetWidth;
-      const h = it.el.offsetHeight;
-      it.el.style.transform = `translate3d(${it.targetX - w / 2}px, ${it.targetY - h / 2}px, 0)`;
+      const w = it.el.offsetWidth || 60;
+      const h = it.el.offsetHeight || 16;
+      it.finalTransform = `translate3d(${it.targetX - w / 2}px, ${it.targetY - h / 2}px, 0)`;
     });
   }
 
   function checkOverlaps() {
-    const boxes = items.map(it => ({
-      item: it,
-      rect: it.el.getBoundingClientRect()
-    }));
+    const boxes = items.map(it => {
+      const w = it.el.offsetWidth || 60;
+      const h = it.el.offsetHeight || 16;
+      return {
+        item: it,
+        left: it.targetX - w / 2,
+        right: it.targetX + w / 2,
+        top: it.targetY - h / 2,
+        bottom: it.targetY + h / 2
+      };
+    });
 
     const overlappingItems = new Set();
-
     for (let i = 0; i < boxes.length; i++) {
       for (let j = i + 1; j < boxes.length; j++) {
-        const a = boxes[i].rect;
-        const b = boxes[j].rect;
-        // 6px total padding between boxes
+        const a = boxes[i];
+        const b = boxes[j];
+        // 6px padding between bounding boxes
         const overlap = (
           a.left < b.right + 6 &&
           a.right > b.left - 6 &&
@@ -491,8 +497,8 @@ function startHeartAnimation() {
           a.bottom > b.top - 6
         );
         if (overlap) {
-          overlappingItems.add(boxes[i].item);
-          overlappingItems.add(boxes[j].item);
+          overlappingItems.add(a.item);
+          overlappingItems.add(b.item);
         }
       }
     }
@@ -502,7 +508,7 @@ function startHeartAnimation() {
   // Iteratively reduce font sizes down to min 9px
   let fontReduction = 0;
   let overlappingSet = new Set();
-  const maxReduction = Math.max(0, baseSizes.inner - 9);
+  const maxReduction = Math.max(0, Math.floor(baseSizes.inner - 9));
 
   for (fontReduction = 0; fontReduction <= maxReduction; fontReduction++) {
     applyFontSizesAndPositions(fontReduction);
@@ -510,9 +516,9 @@ function startHeartAnimation() {
     if (overlappingSet.size === 0) break;
   }
 
-  // If still overlapping at minimum font size (9px), drop the longest phrases until no overlaps
-  while (overlappingSet.size > 0) {
-    // Find longest phrase among overlapping ones (excluding Urdu)
+  // If still overlapping at 9px, selectively drop the longest overlapping phrase (excluding Urdu)
+  let dropSafety = 10;
+  while (overlappingSet.size > 0 && dropSafety-- > 0) {
     let longestItem = null;
     let maxLen = -1;
     overlappingSet.forEach(it => {
@@ -524,41 +530,28 @@ function startHeartAnimation() {
 
     if (!longestItem) break;
 
-    // Remove from its ring list and items
     longestItem.el.remove();
     const itIdx = items.indexOf(longestItem);
     if (itIdx !== -1) items.splice(itIdx, 1);
 
-    if (longestItem.ring === "outer") {
-      outerItems = outerItems.filter(it => it !== longestItem);
-    } else if (longestItem.ring === "middle") {
-      middleItems = middleItems.filter(it => it !== longestItem);
-    } else if (longestItem.ring === "inner") {
-      innerItems = innerItems.filter(it => it !== longestItem);
-    }
+    if (longestItem.ring === "outer") outerItems = outerItems.filter(it => it !== longestItem);
+    else if (longestItem.ring === "middle") middleItems = middleItems.filter(it => it !== longestItem);
+    else if (longestItem.ring === "inner") innerItems = innerItems.filter(it => it !== longestItem);
 
     applyFontSizesAndPositions(fontReduction);
     overlappingSet = checkOverlaps();
   }
 
-  // Compute final center-aligned target translate transforms
+  // Assign Phase A random positions within visible stage boundaries
   items.forEach(it => {
-    const w = it.el.offsetWidth;
-    const h = it.el.offsetHeight;
-    it.finalTransform = `translate3d(${it.targetX - w / 2}px, ${it.targetY - h / 2}px, 0)`;
-  });
-
-  // Assign Phase A random positions across viewport
-  items.forEach(it => {
-    it.randX = Math.random() * (vw - 100) + 10;
-    it.randY = Math.random() * (vh - 120) + 20;
+    it.randX = Math.random() * Math.max(100, heartW - 100) + 20;
+    it.randY = Math.random() * Math.max(100, heartH - 60) + 20;
     it.phaseATransform = `translate3d(${it.randX}px, ${it.randY}px, 0)`;
   });
 
-  // If user prefers reduced motion, skip animations
+  // If user prefers reduced motion, show final heart directly
   if (isReducedMotion) {
     items.forEach(it => {
-      it.el.style.transition = "none";
       it.el.style.opacity = it.ring === "urdu" ? "1" : "0.85";
       it.el.style.transform = it.finalTransform;
     });
@@ -567,38 +560,41 @@ function startHeartAnimation() {
     return;
   }
 
-  // --- PHASE A (~8s): Phrases appear one at a time, drifting with low opacity (0.08 - 0.2) ---
-  const interval = 8000 / items.length;
+  // --- PHASE A: Words appear softly drifting across the stage (clearly visible, ~3.5s) ---
+  const interval = 3500 / items.length;
   items.forEach((it, i) => {
     it.el.style.opacity = "0";
     it.el.style.transform = it.phaseATransform;
 
     setTimeout(() => {
-      it.el.style.opacity = (Math.random() * 0.12 + 0.08).toFixed(2);
-      const driftX = it.randX + (Math.random() * 24 - 12);
-      const driftY = it.randY + (Math.random() * 24 - 12);
+      it.el.classList.add("drifting");
+      it.el.style.opacity = (Math.random() * 0.15 + 0.22).toFixed(2);
+      const driftX = it.randX + (Math.random() * 20 - 10);
+      const driftY = it.randY + (Math.random() * 20 - 10);
       it.el.style.transform = `translate3d(${driftX}px, ${driftY}px, 0)`;
     }, i * interval);
   });
 
-  // --- PHASE B: Glide to ring positions (outer first, then middle, then inner, then Urdu) ---
+  // --- PHASE B: Glide smoothly to concentric heart ring positions ---
+  // Outer first, then middle, then inner, then Urdu
   const ringDelays = {
-    outer: 8000,
-    middle: 8700,
-    inner: 9400,
-    urdu: 10100
+    outer: 3800,
+    middle: 4400,
+    inner: 5000,
+    urdu: 5600
   };
 
   items.forEach(it => {
-    const startDelay = ringDelays[it.ring] || 8000;
+    const startDelay = ringDelays[it.ring] || 3800;
     setTimeout(() => {
-      it.el.style.transition = "transform 3.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 3s ease";
+      it.el.classList.remove("drifting");
+      it.el.classList.add("gliding");
       it.el.style.opacity = it.ring === "urdu" ? "1" : (Math.random() * 0.15 + 0.75).toFixed(2);
       it.el.style.transform = it.finalTransform;
     }, startDelay);
   });
 
-  // --- PHASE C: Once settled (~13.8s), slow pulse (scale 1 to 1.03), rose-gold glow, Continue button ---
+  // --- PHASE C: Once settled (~8.2s), slow pulse (scale 1 to 1.03), rose-gold glow, Continue button ---
   setTimeout(() => {
     stage.classList.add("heart-glowing");
     continueBtn.style.display = "inline-flex";
@@ -606,7 +602,7 @@ function startHeartAnimation() {
     void continueBtn.offsetWidth;
     continueBtn.style.transition = "opacity 0.8s ease, transform 0.8s ease";
     continueBtn.style.opacity = "1";
-  }, 13800);
+  }, 8200);
 
   continueBtn.addEventListener("click", () => {
     switchScreen("screen-heart", "screen-photos");
